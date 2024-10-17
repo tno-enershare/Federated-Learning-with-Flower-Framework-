@@ -1,5 +1,6 @@
 #![logo_Enershare-300x88](https://github.com/user-attachments/assets/3acef38f-45d5-4bf5-9142-08c73d73718f)
- Federated Learning with Flower Framework in Docker
+
+Federated Learning with Flower Framework in Docker
 
 ## Project Description
 
