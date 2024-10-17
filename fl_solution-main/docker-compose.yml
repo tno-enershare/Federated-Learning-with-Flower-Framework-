@@ -1,0 +1,63 @@
+services:
+  prepare_data:
+    build:
+      context: ./dataset
+      dockerfile: Dockerfile
+    volumes:
+      - ./results:/results
+    environment:
+      - NUM_CLIENTS=${NUM_CLIENTS:-5}
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      prepare_data:
+        condition: service_completed_successfully
+    volumes:
+      - ./results:/results
+    environment:
+      - NUM_CLIENTS=${NUM_CLIENTS:-5}
+      - NUM_ROUNDS=${NUM_ROUNDS:-3}
+    command: ["./run.sh"]
+    healthcheck:
+      test: ["CMD", "curl", "--http0.9", "-f", "http://localhost:8080"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+      start_interval: 5s
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    volumes:
+      - ./results:/results
+    depends_on:
+      server:
+        condition: service_healthy
+    environment:
+      - NUM_CLIENTS=${NUM_CLIENTS:-5}
+    command: ["./run.sh"]
+
+  collect_predictions:
+    build:
+      context: ./results
+      dockerfile: Dockerfile
+    volumes:
+      - ./results:/results
+    depends_on:
+      client:
+        condition: service_completed_successfully
+    environment:
+      - NUM_CLIENTS=${NUM_CLIENTS:-5}
+    command: ["python", "collect_predictions.py"]
+    restart: "no"  # Ensure it doesn't restart automatically
+
+networks:
+  default:
+    driver: bridge

@@ -1,0 +1,17 @@
+services:
+  fl-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      FLASK_APP: ./web-app.py:app
+    ports:
+      - "8081:80"
+    volumes:
+      - type: volume
+        source: results
+        target: /results
+        # read_only: true
+
+volumes:
+  results:
