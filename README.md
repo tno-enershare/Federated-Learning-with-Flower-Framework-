@@ -4,40 +4,6 @@
 
 This project demonstrates a federated learning setup using the Flower framework. It involves preparing data, setting up a federated server, deploying multiple clients, and collecting predictions. The entire workflow is containerized using Docker.
 
-## Project Structure
-
-The project directory is organized as follows:
-
-```bash
-fl_solution/
-│
-├── dataset/
-│ ├── Dockerfile
-│ ├── prepare_data.py
-│ ├── requirements.txt
-│ └── Slovenia_Consumers_15min_2021_2022_Anonymized_WithTimestamp.csv
-│
-├── server/
-│ ├── Dockerfile
-│ ├── server.py
-│ ├── run.sh
-│ └── requirements.txt
-│
-├── client/
-│ ├── Dockerfile
-│ ├── client.py
-│ ├── run.sh
-│ └── requirements.txt
-│
-├── results/
-│ ├── Dockerfile
-│ ├── collect_predictions.py
-│ ├── wait_and_collect.sh
-│ └── requirements.txt
-│
-├── docker-compose.yml
-```
-
 ## Files and Directories
 
 - **dataset/**: Contains scripts and Dockerfile for data preparation.
